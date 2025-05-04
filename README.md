@@ -4,9 +4,9 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 ## 安装和运行
-# 安装依赖
+#### 安装依赖
 npm install
-# 启动开发服务器
+#### 启动开发服务器
 npm run dev
 ## 开发进度：
 已实现的通过访问api的实际可用功能
