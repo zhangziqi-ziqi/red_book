@@ -1,0 +1,41 @@
+.my{
+    background-color: #f5f5f5;
+}
+.logout el-popover #reference{
+    position: relative;
+}
+.logout el-button{
+    font-size: 20px;
+    font-weight: 600;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.myadmin{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+.myadmin img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 30px;
+}
+.myadmin-name{
+    font-size: 16px;
+    font-weight: 600;
+}
+.my-brief{
+    padding-left: 30px;
+    padding-bottom: 30px;
+}
+.mylist{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10%;
+    
+}
