@@ -3,11 +3,12 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import api from '@/utils/request'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>()
 const checkUser = (rule: any, value: any, callback: any) => {
     if (!value) {
-        return callback(new Error("Can't be empty"))
+        return callback(new Error("此处不能为空"))
     }
     setTimeout(() => {
         callback()
@@ -16,7 +17,7 @@ const checkUser = (rule: any, value: any, callback: any) => {
 
 const validatePass = (rule: any, value: any, callback: any) => {
     if (value === '') {
-        callback(new Error('Please input the password'))
+        callback(new Error('请输入密码'))
     } else {
         if (!ruleFormRef.value) return
         ruleFormRef.value.validateField('pass')
@@ -47,6 +48,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         localStorage.setItem('token', response.data.token)
         router.push('/main')
     } catch (error) {
+        ElMessage.error('登录失败，请检查用户名和密码')
         console.error('Login failed:', error)
     }
 }

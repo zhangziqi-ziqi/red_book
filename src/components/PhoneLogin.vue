@@ -1,21 +1,46 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import axios from 'axios'
+import api from '@/utils/request'
+import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
+const ruleForm = reactive({
+    phoneNumber: '',
+    verificationCode: '',
+})
 const router = useRouter()
-const GetCode = () => {
-    
-    console.log('GetCode')
+const GetCode = async() => {
+    try {
+      const data = {
+        phoneNumber: ruleForm.phoneNumber,
+      }
+      const code =await api.post('/users/code', data)
+      ElMessage.success('验证码已发送')
+      ElMessage.success('验证码为：'+code)
+      return code
+    }catch (error) {
+        console.error('验证码发送失败:', error)
+        ElMessage.error('验证码发送失败,请检查手机号')
+        return
+    }
 }
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = async(formEl: FormInstance | undefined) => {
     if (!formEl) return
     try {
-        
+        formEl.validate() // 等待验证通过
+        const data = ({
+        identifier: ruleForm.phoneNumber,
+        passwordOrCode: ruleForm.verificationCode,
+        pattern:0,
+        })
+        const response =await api.post('/users/login', data)
+        localStorage.setItem('token', response.data.token)
         router.push('/main')
     } catch (error) {
         console.error('Login failed:', error)
+        ElMessage.error('登录失败，验证码错误')
+        return
     }
 }
 const goToSignUp = () => {
@@ -27,10 +52,10 @@ const goToSignUp = () => {
 <template>
     <div class="phone-login">
         <el-form-item label="PhoneNumber">
-            <el-input  placeholder="请输入手机号"/>
+            <el-input  v-model="ruleForm.phoneNumber" placeholder="请输入手机号"/>
         </el-form-item>
         <el-form-item class="verification_area" label="VerificationCode">
-            <el-input placeholder="请输入验证码"/>
+            <el-input v-model="ruleForm.verificationCode" type="text" placeholder="请输入验证码"/>
             <el-button type="primary" @click="GetCode">获取验证码</el-button>
         </el-form-item>
         <el-form-item>

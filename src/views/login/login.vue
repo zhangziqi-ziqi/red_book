@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
+
 import PasswordLogin from '@/components/PasswordLogin.vue'
 import PhoneLogin from '@/components/PhoneLogin.vue'
 const ruleFormRef = ref<FormInstance>()
