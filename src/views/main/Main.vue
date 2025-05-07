@@ -6,6 +6,7 @@ import {onMounted} from 'vue'
 import api from '@/utils/request.ts'
 import {ElMessage} from 'element-plus'
 
+const posts = ref([])
 const searchResults=ref([])
 const tags = ref([
 ])
@@ -65,7 +66,7 @@ const handleSearchResults=(results)=>{
                 </div>
             </div>
         </div>
-    <Content :posts="searchResults" />     
+    <Content :posts="searchResults.length > 0 ? searchResults : posts"/>     
 </div>
 </template>
 
