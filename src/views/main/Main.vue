@@ -14,7 +14,7 @@ const tags = ref([
 onMounted(async () => {
     try {
         const response = await api.get('/posts/categories')
-        tags.value = response.data
+        tags.value = response.data.data
         if (tags.value.length > 0) {
             activeTag.value = tags.value[0].id
             await fetchPosts(activeTag.value)

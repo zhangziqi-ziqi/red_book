@@ -60,7 +60,7 @@
               <button 
                 class="upload-btn"
                 @click="triggerFileInput"
-                :disabled="isStreaming"
+                :disabled="true"
               >
                 <PaperClipIcon class="icon" />
               </button>
@@ -101,7 +101,7 @@ import {
   XMarkIcon
 } from '@heroicons/vue/24/solid'
 import ChatMessage from '@/components/ChatMessage.vue'
-import { chatAPI } from '@/services/api'
+import chatAPI from '@/services/chatAPI'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 

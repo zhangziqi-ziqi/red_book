@@ -60,7 +60,7 @@ onMounted(async () => {
         try {
             loading.value = true
             const res = await api.get('/posts/recommended')
-            const posts = res.data.data
+            const posts = res.data.data.records
             // 获取推荐内容的用户信息
             const postsWithUserInfo = await Promise.all(
                 posts.map(async post => {

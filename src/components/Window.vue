@@ -3,8 +3,9 @@
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted, reactive } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { ElButton, ElDialog, ElForm, ElFormItem, ElInput } from 'element-plus'
+import { ElButton, ElDialog, ElForm, ElFormItem, ElInput,ElMessage } from 'element-plus'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import api from '@/utils/request.ts'
 import { Plus } from '@element-plus/icons-vue'
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef()
@@ -72,10 +73,10 @@ const handleConfirm = async () => {
       tags: '',
       category: ''
     }
-    
+
     // 清除编辑器内容
     valueHtml.value = '<p></p>'
-    
+
     // 关闭对话框
     dialogVisible.value = false
     

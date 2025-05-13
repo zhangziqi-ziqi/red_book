@@ -18,7 +18,7 @@ const getInfo = async () => {
     try {
         const response = await api.get('/users/me')
         ElMessage.info('获取用户信息成功', response.data.data)
-        user.value = response.data
+        user.value = response.data.data
         if(!user.value.avatar){
             user.value.avatar = '@/assets/image/img.png'//设置为默认头像
         }
@@ -26,9 +26,9 @@ const getInfo = async () => {
         console.error('获取用户信息失败：', error)
         ElMessage.error('获取用户信息失败，请重试')
         //未登录则跳转到登录页，实际使用中应该不会触发
-        if (error.response?.status === 401) {
-            router.push('/login')
-        }
+        // if (error.response?.status === 401) {
+        //     router.push('/login')
+        // }
     }
 }
 const logout = async () => {
