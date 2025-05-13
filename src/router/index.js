@@ -19,8 +19,16 @@ const routes =[
             {
                 path:'/publish',   //发帖
                 name:'publish',    
-                component:()=>import('../views/post/post.vue')
+                component:()=>import('../views/post/post.vue'),
+                children: [
+                    { 
+                      path: '/ai',
+                      name: 'ai',
+                      component: ()=>import('../views/ai/AIChat.vue'),
+                    }
+                ]
             },
+
             {
                 path:'/message',   //通知
                 name:'message',    

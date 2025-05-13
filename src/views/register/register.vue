@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
-import api from '@/utils/request'
+import api from '@/utils/request.ts'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 
@@ -68,7 +68,7 @@ const rules = reactive<FormRules>({
     ],
     code: [
         {
-            required: true,
+            // required: true,
             message: '验证码不能为空',
             trigger: 'blur',
         }
@@ -136,11 +136,11 @@ const SignUp = async () => {
 const GetCode = async() => {
     try {
       const data = {
-        phoneNumber: form.phone,
+        phone: form.phone,
       }
-      const code =await api.post('/users/code', data)
+      const code =await api.post('/users/code', null, {params : data})
       ElMessage.success('验证码已发送')
-      ElMessage.success('验证码为：'+code)
+      ElMessage.success('验证码为：'+code.data.data)
       return code
     }catch (error) {
         console.error('验证码发送失败:', error)

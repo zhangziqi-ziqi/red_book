@@ -13,11 +13,11 @@ const router = useRouter()
 const GetCode = async() => {
     try {
       const data = {
-        phoneNumber: ruleForm.phoneNumber,
+        phone: ruleForm.phoneNumber,
       }
-      const code =await api.post('/users/code', data)
+      const code =await api.post('/users/code', null,{params:data})
       ElMessage.success('验证码已发送')
-      ElMessage.success('验证码为：'+code)
+      ElMessage.success('验证码为：'+code.data.data)
       return code
     }catch (error) {
         console.error('验证码发送失败:', error)

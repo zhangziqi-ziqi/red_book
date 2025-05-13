@@ -17,6 +17,7 @@ const user = ref({
 const getInfo = async () => {
     try {
         const response = await api.get('/users/me')
+        ElMessage.info('获取用户信息成功', response.data.data)
         user.value = response.data
         if(!user.value.avatar){
             user.value.avatar = '@/assets/image/img.png'//设置为默认头像

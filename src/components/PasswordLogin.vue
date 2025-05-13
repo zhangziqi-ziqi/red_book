@@ -45,7 +45,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         pattern:1,
         })
         const response = await api.post( '/users/login', data)
-        localStorage.setItem('token', response.data.token)
+        if(response.data.code === 0) {
+            ElMessage.error(response.data.msg)
+            return
+        }
+        localStorage.setItem('token', response.data.data)
         router.push('/main')
     } catch (error) {
         ElMessage.error('登录失败，请检查用户名和密码')
