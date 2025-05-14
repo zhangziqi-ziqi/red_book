@@ -4,7 +4,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import api from '@/utils/request.ts'
 import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
@@ -74,25 +74,7 @@ const rules = reactive<FormRules>({
         }
     ],
 })
-const handleAvatarSuccess = (response: any, uploadFile: any) => {
-    //上传成功后，将返回图片的url赋值给表单
-    form.avatar = response.url
-}
-const beforeAvatarUpload = (file: File) => {
-    //限制图片类型和大小
-    const isJPG = file.type === 'image/jpeg' ||
-        file.type === 'image/png'
-    const isLt2M = file.size / 1024 / 1024 < 2
-    if (!isJPG) {
-        ElMessage.error('上传头像图片只能是 JPG或PNG 格式!')
-        return false
-    }
-    if (!isLt2M) {
-        ElMessage.error('上传头像图片大小不能超过 2MB!')
-        return false
-    }
-    return true
-}
+
 // 登录选项配置
 const SignUp = async () => {
     if (!formRef.value) return
@@ -175,19 +157,6 @@ const GetCode = async() => {
             <el-form-item label="验证码" prop="code">
                 <el-input v-model="form.code" />
             </el-form-item>
-            <el-form-item label="头像" prop="avatar">
-                <el-upload class="avatar-uploader" :action="api.defaults.baseURL + '/common/upload'" 
-                    :headers="api.defaults.headers" name="file" :show-file-list="false" :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload" :auto-upload="true">
-                    <img v-if="form.avatar" :src="form.avatar" class="avatar" />
-                    <el-icon v-else class="avatar-uploader-icon">
-                        <Plus />
-                    </el-icon>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="昵称">
-                <el-input v-model="form.nickname" />
-            </el-form-item>
             <el-form-item label="性别">
                 <el-radio-group v-model="form.gender">
                     <el-radio value="male">男</el-radio>
@@ -231,33 +200,5 @@ const GetCode = async() => {
     transition: all 0.3s ease;
 }
 
-.avatar-uploader {
-    text-align: center;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s;
-}
 
-.avatar-uploader:hover {
-    border-color: #409EFF;
-}
-
-.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    line-height: 100px;
-}
-
-.avatar {
-    width: 100px;
-    height: 100px;
-    display: block;
-    object-fit: cover;
-}
 </style>

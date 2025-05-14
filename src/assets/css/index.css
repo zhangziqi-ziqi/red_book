@@ -59,12 +59,14 @@
 .content-container ul{
     width: 100%;
     margin: auto;
+    margin-top: 40px;
     column-count: 2;
     column-gap: 5px;
 }
 .content-container ul li{
     margin-bottom: 10px;
     break-inside: avoid;
+    list-style: none; 
 }
 /*卡片*/
 .content-img img {

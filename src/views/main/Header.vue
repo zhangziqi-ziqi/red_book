@@ -7,6 +7,7 @@ const router = useRouter()
 const searchType = ref('keyword')
 const searchResults = ref([])
 const total = ref(0)
+const searchkeyword = ref('')
 const data = ref({
     "keyword": "",
     "username": "",
@@ -14,13 +15,28 @@ const data = ref({
     "page": 1,
     "size": 10
 })
+const emit = defineEmits(['search-results'])
 const search = async () => {
     try {
-        data.value.keyword = searchType.value === 'keyword' ? data.value.keyword : ''
-        data.value.username = searchType.value === 'username' ? data.value.keyword : ''
-        data.value.hashtag = searchType.value === 'hashtag' ? data.value.keyword : ''
+        // 重置所有搜索字段
+        data.value.keyword = ''
+        data.value.username = ''
+        data.value.hashtag = ''
+
+        // 根据搜索类型设置对应字段
+        switch (searchType.value) {
+            case 'keyword':
+                data.value.keyword = searchkeyword.value
+                break
+            case 'username':
+                data.value.username = searchkeyword.value
+                break
+            case 'hashtag':
+                data.value.hashtag = searchkeyword.value
+                break
+        }
         const res = await api.post('/posts/search', data.value)
-        if (res.data && res.data.data) {
+        if (res.data.code === 1) {
             searchResults.value = res.data.data.records
             total.value = res.data.data.total
             //发送搜索结果到父组件
@@ -29,6 +45,8 @@ const search = async () => {
             if (searchResults.value.length === 0) {
                 ElMessage.info('没有找到相关内容')
             }
+        } else {
+            throw new Error(res.data.msg || '搜索失败')
         }
     } catch (error) {
         console.error('搜索失败：', error)
@@ -46,7 +64,7 @@ const search = async () => {
                     <el-option label="用户" value="username" />
                     <el-option label="标签" value="hashtag" />
                 </el-select>
-                <input type="text" placeholder="搜索文章、用户、标签" v-model="data.keyword">
+                <input type="text" placeholder="搜索文章、用户、标签" v-model="searchkeyword">
                 <button @click="search">
                     <i class="iconfont icon-sousuo"></i>
                 </button>
@@ -61,14 +79,17 @@ const search = async () => {
     align-items: center;
     gap: 10px;
 }
+
 .header-input input {
     flex: 1;
     padding: 8px;
     min-width: 200px;
 }
+
 .header-input button {
     margin-right: 5px;
 }
+
 .search-type {
     min-width: 70px;
 }
@@ -76,6 +97,5 @@ const search = async () => {
 .search-results {
     margin-top: 20px;
 }
-
 </style>
 export default Header

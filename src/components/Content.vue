@@ -18,14 +18,14 @@ const getUserInfo = async (userId) => {
     try {
         const res = await api.get(`/users/${userId}`);
         return {
-            name: res.data.name || '未知用户',
-            avatar: res.data.avatar || '@/assets/image/img.png'
+            name: res.data.data.username || '未知用户',
+            avatar: res.data.data.avatarUrl || '/src/assets/image/img.png'
         }
     } catch (error) {
         console.error('获取用户信息失败：', error);
         return {
             name: '未知用户',
-            avatar: '@/assets/image/img.png'
+            avatar: '/src/assets/image/img.png'
         }
     }
 }
@@ -44,7 +44,7 @@ watch(() => props.posts, async (newPosts) => {
                         title: post.title,
                         img: post.coverUrl || '',
                         name: userInfo.name,
-                        avatar: userInfo.avatar,
+                        avatar: userInfo.avatar ,
                         like: post.likeCount
                     }
 
@@ -56,11 +56,8 @@ watch(() => props.posts, async (newPosts) => {
 },{ immediate: true })
 
 onMounted(async () => {
-    if (content.value.length === 0 && !props.posts?.length) {
         try {
-            loading.value = true
-            const res = await api.get('/posts/recommended')
-            const posts = res.data.data.records
+            loading.value = true  // 开始加载
             // 获取推荐内容的用户信息
             const postsWithUserInfo = await Promise.all(
                 posts.map(async post => {
@@ -70,7 +67,7 @@ onMounted(async () => {
                         title: post.title,
                         img: post.coverUrl || '',
                         name: userInfo.name,
-                        avatar: userInfo.avatar,
+                        avatar: userInfo.avatar ,
                         like: post.likeCount
                     }
                 })
@@ -81,7 +78,6 @@ onMounted(async () => {
         }finally {
             loading.value = false  // 结束加载
         }
-    }
 })
 //带帖子id参数跳转到详情页
 const goDetails = (postId) => {
@@ -123,4 +119,5 @@ const goDetails = (postId) => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -10,13 +10,13 @@ const posts = ref([])
 const searchResults=ref([])
 const tags = ref([
 ])
-
+const activeTag = ref(1)
 onMounted(async () => {
     try {
         const response = await api.get('/posts/categories')
         tags.value = response.data.data
         if (tags.value.length > 0) {
-            activeTag.value = tags.value[0].id
+            activeTag.value = tags.value[0].categoryId
             await fetchPosts(activeTag.value)
         }
     }catch (error) {
@@ -24,8 +24,6 @@ onMounted(async () => {
         ElMessage.error('获取标签失败')
     }
 })
-
-const activeTag = ref(1)
 const handleTagClick = async(tagId) => {
     activeTag.value = tagId
     await fetchPosts(tagId)
@@ -35,11 +33,14 @@ const fetchPosts = async (categoryId) => {
     try {
         const data = {
             page: 1,
-            pageSize: 10,
-            categoryId: categoryId,
+            size: 10,
+            category_id: categoryId,
         }
-        const response = await api.get(`/posts/recommended`,data)
-        posts.value = response.data
+        const response = await api.get(`/posts/recommended`,{params:data})
+        posts.value = response.data.data.records
+        if (posts.value.length === 0) {
+            ElMessage.info('没有找到相关内容')
+        }
     } catch (error) {
         console.error('获取帖子失败:', error)
         ElMessage.error('获取帖子失败')
@@ -58,9 +59,9 @@ const handleSearchResults=(results)=>{
             <div class="tags-scroll">
                 <div 
                     v-for="tag in tags" 
-                    :key="tag.id"
-                    :class="['tag-item', { active: activeTag === tag.id }]"
-                    @click="handleTagClick(tag.id)"
+                    :key="tag.categoryId"
+                    :class="['tag-item', { active: activeTag === tag.categoryId }]"
+                    @click="handleTagClick(tag.categoryId)"
                 >
                     {{ tag.name }}
                 </div>

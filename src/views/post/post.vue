@@ -2,8 +2,6 @@
 import Window from '@/components/Window.vue'
 import { ref, onMounted } from 'vue'
 import AIChat from '../ai/AIChat.vue'
-
-
 </script>
 
 <template>

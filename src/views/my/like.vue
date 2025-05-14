@@ -6,10 +6,13 @@ import api from '@/utils/request'
 
 const likeResults = ref([])
 
-onMounted(()=>{
-    const likeResultsStr = localStorage.getItem('likeResults')
-    if(likeResultsStr){
-        likeResults.value = JSON.parse(likeResultsStr)
+onMounted(async()=>{
+    try {
+        const res = await api.get('/likes/my-liked-posts')
+        likeResults.value = res.data.data
+    }catch (error) {
+        console.error('获取点赞内容失败：', error)
+        ElMessage.error('获取点赞内容失败，请重试')
     }
 })
 </script>
